@@ -28,8 +28,8 @@ export default {
   name: "GameLevel",
   emits: ["selected"],
   methods: {
-    onClickLevel(noCard) {
-      this.$emit("selected", { noCard });
+    onClickLevel(numberOfCards) {
+      this.$emit("selected", { numberOfCards });
     },
   },
 };
