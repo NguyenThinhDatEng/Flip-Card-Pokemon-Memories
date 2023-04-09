@@ -1,9 +1,6 @@
 <template>
   <div class="game-view">
     <card-flip />
-    <card-flip />
-    <card-flip />
-    <card-flip />
   </div>
 </template>
 
@@ -21,6 +18,8 @@ export default {
 <style scoped>
 .game-view {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 </style>
