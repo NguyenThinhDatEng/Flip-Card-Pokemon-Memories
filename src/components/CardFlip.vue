@@ -1,9 +1,14 @@
 <template>
   <div class="card">
-    <div :class="[{ flipped: isFront }, 'card__inner']" @click="onToggle">
+    <div
+      :class="[{ flipped: isFront }, { completed: isCompleted }, 'card__inner']"
+      @click="onToggle"
+    >
+      <!-- front face -->
       <div class="card__face card__face--front">
         <div class="card__content"></div>
       </div>
+      <!-- back face -->
       <div class="card__face card__face--back">
         <div
           class="card__content"
@@ -22,18 +27,31 @@ export default {
     imageUrl: {
       type: String,
       required: true,
-    },
+    }, // url of image
+    cardContext: {
+      type: Object,
+      default: () => {},
+    }, // index of card
   },
 
   methods: {
+    /**
+     * change isFront
+     */
     onToggle() {
-      this.isFront = !this.isFront;
+      if (this.isCompleted == false) {
+        this.isFront = !this.isFront;
+        this.$nextTick(() => {
+          if (this.isFront === true) this.$emit("flipped", this.cardContext);
+        });
+      }
     },
   },
 
   data() {
     return {
       isFront: false,
+      isCompleted: false,
     };
   },
 };
@@ -55,6 +73,10 @@ export default {
 
 .card__inner.flipped {
   transform: rotateY(180deg);
+}
+
+.card__inner.completed {
+  cursor: default;
 }
 
 .card__face {
