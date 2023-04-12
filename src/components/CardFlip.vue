@@ -1,12 +1,15 @@
 <template>
-  <div class="card">
+  <div class="card" :style="{ height: height, width: width }">
     <div
       :class="[{ flipped: isFront }, { completed: isCompleted }, 'card__inner']"
       @click="onToggle"
     >
       <!-- front face -->
       <div class="card__face card__face--front">
-        <div class="card__content"></div>
+        <div
+          class="card__content"
+          :style="{ backgroundSize: backgroundSize }"
+        ></div>
       </div>
       <!-- back face -->
       <div class="card__face card__face--back">
@@ -31,7 +34,17 @@ export default {
     cardContext: {
       type: Object,
       default: () => {},
-    }, // index of card
+    }, // index and number of card
+    numberOfRows: {
+      type: Number,
+      default: 4,
+    }, // number of rows to show cards
+  },
+
+  created() {
+    this.height = `calc((100vh - 16px * ${this.numberOfRows}) / ${this.numberOfRows} - 16px)`;
+    this.width = `calc(((100vh - 16px * ${this.numberOfRows}) / ${this.numberOfRows} - 16px) * 3 / 4)`; // 3/4 height
+    this.backgroundSize = `calc(((100vh - 16px * ${this.numberOfRows}) / ${this.numberOfRows} - 16px) * 3 / 4 / 3)`; // 1/3 width
   },
 
   methods: {
@@ -52,6 +65,9 @@ export default {
     return {
       isFront: false,
       isCompleted: false,
+      height: "",
+      width: "",
+      backgroundSize: "",
     };
   },
 };
@@ -59,9 +75,7 @@ export default {
 
 <style scoped>
 .card {
-  width: 90px;
-  height: 120px;
-  margin: 0 8px;
+  margin: 0 1rem 1rem 0;
 }
 .card__inner {
   position: relative;
@@ -69,6 +83,7 @@ export default {
   transform-style: preserve-3d;
   cursor: pointer;
   height: 100%;
+  width: 100%;
 }
 
 .card__inner.flipped {
@@ -94,7 +109,6 @@ export default {
   background: url("@/assets/images/icon_back.png") no-repeat center center;
   width: 100%;
   height: 100%;
-  background-size: 40px;
 }
 
 .card__face--back {
